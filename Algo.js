@@ -1,18 +1,6 @@
-//////////////// Body estimation - To Do //////////////
-
-// 1.Calculate height and match with real height - Done
-// 2.obtain user input through camera
-//
-// Calculate following:
-// shoulders - given by bodypix.
-// Chest     - by logic of ratios.
-// Waist     - by logic of ratios.
-// Hip       - bodypix
-// Inseam    - Need to think
-
-
 const img = document.querySelector("#image");
 const sideimg = document.querySelector("#sideImage");
+imgList = [];
 window.frontBody = {};
 window.sideBody = {};
 let count = 0;
@@ -26,17 +14,10 @@ const source_2 = {
 
 const constraints = {
     audio: false,
-    video: { facingMode: 'face' },
-    options: {
-        muted: true,
-        mirror: true
-    },
-    elemId: 'localVideo'
+    video: { facingMode: 'environment' },
 };
 
-const captureVideoButton = document.querySelector(
-    "#start"
-);
+const captureVideoButton = document.querySelector("#start");
 const screenshotButton = document.querySelector("#screenshot-button");
 const predict = document.querySelector("#predict");
 const video2 = document.querySelector("#screenshot video");
@@ -50,34 +31,13 @@ captureVideoButton.onclick = function () {
         .then(handleSuccess)
         .catch(handleError);
 };
-function changeFacingMode(facingMode) {
-    if (video2.srcObject) {
-        video2.srcObject.getTracks().forEach(track => track.stop());
-        video2.srcObject = null;
-    }
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: facingMode
-      }
-    }).then(stream => video2.srcObject = stream);
-  }
 
 screenshotButton.onclick = video2.onclick = function () {
     canvas2.width = video2.videoWidth;
     canvas2.height = video2.videoHeight;
     canvas2.getContext("2d").drawImage(video2, 0, 0);
-    // Other browsers will fall back to image/png
-    // console.log(img.src );
-    if (count == 0) {
-        console.log('img1');
-        img.src = canvas2.toDataURL("image/webp");
-        // img.src = 'sandunh.jpeg'
-    } else {
-        console.log('img2')
-        sideimg.src = canvas2.toDataURL("image/webp");
-        // sideimg.src = 'sanduns.jpeg'
-    }
-    count = 1;
+    imgList.push(canvas2.toDataURL("image/webp"));
+    
 };
 
 predict.onclick = function () {
@@ -88,7 +48,14 @@ predict.onclick = function () {
 function handleSuccess(stream) {
     screenshotButton.disabled = false;
     video2.srcObject = stream;
-    changeFacingMode('environment');
+    if (video2.srcObject) {
+        video2.srcObject.getTracks().forEach(track => track.stop());
+        video2.srcObject = null;
+    }
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: facingMode
+      }});
 }
 
 
@@ -119,14 +86,14 @@ async function loadAndPredict() {
         multiplier: 0.75,
         quantBytes: 2
     });
-    const partSegmentation = await net.segmentPersonParts(img, {
+    const partSegmentation = await net.segmentPersonParts(imgList[0], {
         flipHorizontal: false,
         internalResolution: 'medium',
         segmentationThreshold: 0.5,  ///Change to obtain maximum performance
         maxDetections: 1
     });
 
-    const sidepartSegmentation = await net.segmentPersonParts(sideimg, {
+    const sidepartSegmentation = await net.segmentPersonParts(imgList[1], {
         flipHorizontal: false,
         internalResolution: 'medium',
         segmentationThreshold: 0.5,  ///Change to obtain maximum performance
