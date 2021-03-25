@@ -6,21 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-  
-      .column {
-        float: left;
-        width: 33.33%;
-        padding: 5px;
-      }
-  
-      /* Clearfix (clear floats) */
-      .row::after {
-        content: "";
-        clear: both;
-        display: table;
+      .detail-view {
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
     </style>
   
@@ -36,20 +28,24 @@
   
   <body>
     <div class="container" id="screenshot">
-      <div class="p-3">
-        <video autoplay class="w-100 d-block" ></video>
+      <div class="d-flex align-item-center justify-content-center">
+        <video autoplay class="w-100 d-block" style="max-width: 600px;" ></video>
       </div>
-      <canvas style="display:none;"></canvas>
+      <!-- <canvas style="display:none;"></canvas> -->
   
       <div class="d-flex align-item-center justify-content-center">
-        <button class="btn btn-primary me-1" id="start">start</button>
         <button class="btn btn-primary me-1"  id="screenshot-button">capture</button>
         <button class="btn btn-primary me-1"  id="predict">predict</button>
       </div>
-      <div class="d-flex align-item-center justify-content-center mt-3" id="imgContainer"> 
+      <div class="d-flex align-item-center justify-content-center mt-3 mb-3" id="imgContainer"> 
       
      </div>
-      <p id="demo" style="font-size:25px" ;></p>
+      <div>
+        <h4>Shoulder : <span class="badge bg-secondary" id="shoulder">00</span></h4>
+        <h4>Chest : <span class="badge bg-secondary" id="chest">00</span></h4>
+        <h4>Waist : <span class="badge bg-secondary" id="waist">00</span></h4>
+        <h4>Hip : <span class="badge bg-secondary" id="hip">00</span></h4>
+      </div>
     </div>
     
   
