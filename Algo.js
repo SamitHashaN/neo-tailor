@@ -13,8 +13,12 @@ const source_2 = {
 };
 
 const constraints = {
-    audio: false,
-    video: { facingMode: 'user' },
+    video: { facingMode: 'face' },
+    options: {
+        muted: true,
+        mirror: true
+    },
+    elemId: 'localVideo'
 };
 
 const captureVideoButton = document.querySelector("#start");
