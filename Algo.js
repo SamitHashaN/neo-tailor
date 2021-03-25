@@ -52,7 +52,9 @@ screenshotButton.onclick = video2.onclick = function () {
     tempImg.src = canvas2.toDataURL("image/webp");
     tempImg.height = "200";
     imgContainer.append(tempImg)
-    imgList.push(canvas2.toDataURL("image/webp"));
+    const imgTempp = new Image();
+    imgTempp.src = canvas2.toDataURL("image/webp");
+    imgList.push(imgTempp);
 };
 
 predict.onclick = function () {
