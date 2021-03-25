@@ -14,7 +14,7 @@ const source_2 = {
 
 const constraints = {
     audio: false,
-    video: { facingMode: 'environment' },
+    video: { facingMode: 'user' },
 };
 
 const captureVideoButton = document.querySelector("#start");
