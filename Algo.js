@@ -1,5 +1,8 @@
-const img = document.querySelector("#image");
-const sideimg = document.querySelector("#sideImage");
+
+const shoulderI = document.getElementById("shoulder");
+const hipI = document.getElementById("hip");
+const waistI = document.getElementById("waist");
+const chestI = document.getElementById("chest");
 let imgList = [];
 window.frontBody = {};
 window.sideBody = {};
@@ -10,22 +13,21 @@ const constraints = {
     video: { facingMode: 'user' }
 };
 
-const captureVideoButton = document.querySelector(
-    "#start"
-);
 const screenshotButton = document.querySelector("#screenshot-button");
 const predict = document.querySelector("#predict");
 const video2 = document.querySelector("#screenshot video");
 
 const canvas2 = document.createElement("canvas");
 
-captureVideoButton.onclick = function () {
+
+function captureVideo () {
     // const handleError = 1;
     navigator.mediaDevices
         .getUserMedia(constraints)
         .then(handleSuccess)
         .catch(handleError);
 };
+
 
 function changeFacingMode(facingMode) {
     if (video2.srcObject) {
@@ -48,14 +50,19 @@ screenshotButton.onclick = video2.onclick = function () {
     const imgContainer = document.getElementById('imgContainer');
     const tempImg = document.createElement('img');
     tempImg.src = canvas2.toDataURL("image/webp");
-    tempImg.height = '200px';
+    tempImg.height = "200";
     imgContainer.append(tempImg)
     imgList.push(canvas2.toDataURL("image/webp"));
 };
 
 predict.onclick = function () {
     console.log('predict');
+    if(imgList.length > 1 ){
     loadAndPredict();
+    } else{
+        alert('capture 2 images')
+    }
+
 };
 
 function handleSuccess(stream) {
@@ -135,7 +142,10 @@ async function loadAndPredict() {
 
 
     var myString = JSON.stringify(outPut);
-    document.getElementById("demo").innerHTML = myString;
+    shoulderI.innerHTML = outPut.Shoulder;
+    chestI.innerHTML = outPut.Chest;
+    waistI.innerHTML = outPut.Waist;
+    hipI.innerHTML = outPut.Hip;
 
     console.log(outPut);
 
@@ -477,3 +487,4 @@ function finalOutput(front, side) {
 
     return { Shoulder: front.fShoulder, Chest: chestGirth, Waist: waistGirth, Hip: hipGirth }
 }
+captureVideo();
