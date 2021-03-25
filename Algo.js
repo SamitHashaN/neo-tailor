@@ -13,13 +13,15 @@ const source_2 = {
 };
 
 const constraints = {
-    video: { facingMode: 'face' },
+    audio: false,
+    video: { facingMode: 'user' },
     options: {
         muted: true,
         mirror: true
     },
     elemId: 'localVideo'
 };
+
 
 const captureVideoButton = document.querySelector("#start");
 const screenshotButton = document.querySelector("#screenshot-button");
@@ -35,6 +37,18 @@ captureVideoButton.onclick = function () {
         .then(handleSuccess)
         .catch(handleError);
 };
+
+function changeFacingMode(facingMode) {
+    if (video2.srcObject) {
+        video2.srcObject.getTracks().forEach(track => track.stop());
+        video2.srcObject = null;
+    }
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: facingMode
+      }
+    }).then(stream => video2.srcObject = stream);
+  }
 
 screenshotButton.onclick = video2.onclick = function () {
     canvas2.width = video2.videoWidth;
@@ -52,14 +66,7 @@ predict.onclick = function () {
 function handleSuccess(stream) {
     screenshotButton.disabled = false;
     video2.srcObject = stream;
-    if (video2.srcObject) {
-        video2.srcObject.getTracks().forEach(track => track.stop());
-        video2.srcObject = null;
-    }
-    navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: 'environment'
-      }});
+    changeFacingMode('environment');
 }
 
 
