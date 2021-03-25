@@ -1,37 +1,13 @@
-//////////////// Body estimation - To Do //////////////
-
-// 1.Calculate height and match with real height - Done
-// 2.obtain user input through camera
-//
-// Calculate following:
-// shoulders - given by bodypix.
-// Chest     - by logic of ratios.
-// Waist     - by logic of ratios.
-// Hip       - bodypix
-// Inseam    - Need to think
-
-
 const img = document.querySelector("#image");
 const sideimg = document.querySelector("#sideImage");
+let imgList = [];
 window.frontBody = {};
 window.sideBody = {};
 let count = 0;
 
-const source_2 = {
-    id: "id_source_1",
-    facing: "environment",
-    kind: "kind_1" | "kind_2",
-    label: "label_1" | "label_2"
-};
-
 const constraints = {
     audio: false,
-    video: { facingMode: 'face' },
-    options: {
-        muted: true,
-        mirror: true
-    },
-    elemId: 'localVideo'
+    video: { facingMode: 'user' }
 };
 
 const captureVideoButton = document.querySelector(
@@ -50,6 +26,7 @@ captureVideoButton.onclick = function () {
         .then(handleSuccess)
         .catch(handleError);
 };
+
 function changeFacingMode(facingMode) {
     if (video2.srcObject) {
         video2.srcObject.getTracks().forEach(track => track.stop());
@@ -68,16 +45,12 @@ screenshotButton.onclick = video2.onclick = function () {
     canvas2.getContext("2d").drawImage(video2, 0, 0);
     // Other browsers will fall back to image/png
     // console.log(img.src );
-    if (count == 0) {
-        console.log('img1');
-        img.src = canvas2.toDataURL("image/webp");
-        // img.src = 'sandunh.jpeg'
-    } else {
-        console.log('img2')
-        sideimg.src = canvas2.toDataURL("image/webp");
-        // sideimg.src = 'sanduns.jpeg'
-    }
-    count = 1;
+    const imgContainer = document.getElementById('imgContainer');
+    const tempImg = document.createElement('img');
+    tempImg.src = canvas2.toDataURL("image/webp");
+    tempImg.height = '200px';
+    imgContainer.append(tempImg)
+    imgList.push(canvas2.toDataURL("image/webp"));
 };
 
 predict.onclick = function () {
@@ -119,14 +92,14 @@ async function loadAndPredict() {
         multiplier: 0.75,
         quantBytes: 2
     });
-    const partSegmentation = await net.segmentPersonParts(img, {
+    const partSegmentation = await net.segmentPersonParts(imgList[0], {
         flipHorizontal: false,
         internalResolution: 'medium',
         segmentationThreshold: 0.5,  ///Change to obtain maximum performance
         maxDetections: 1
     });
 
-    const sidepartSegmentation = await net.segmentPersonParts(sideimg, {
+    const sidepartSegmentation = await net.segmentPersonParts(imgList[1], {
         flipHorizontal: false,
         internalResolution: 'medium',
         segmentationThreshold: 0.5,  ///Change to obtain maximum performance
