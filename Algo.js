@@ -26,7 +26,7 @@ const source_2 = {
 
 const constraints = {
     audio: false,
-    video: { facingMode: 'environment' },
+    video: { facingMode: 'face' },
     options: {
         muted: true,
         mirror: true
@@ -50,6 +50,17 @@ captureVideoButton.onclick = function () {
         .then(handleSuccess)
         .catch(handleError);
 };
+function changeFacingMode(facingMode) {
+    if (video2.srcObject) {
+        video2.srcObject.getTracks().forEach(track => track.stop());
+        video2.srcObject = null;
+    }
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: facingMode
+      }
+    }).then(stream => video2.srcObject = stream);
+  }
 
 screenshotButton.onclick = video2.onclick = function () {
     canvas2.width = video2.videoWidth;
@@ -77,6 +88,7 @@ predict.onclick = function () {
 function handleSuccess(stream) {
     screenshotButton.disabled = false;
     video2.srcObject = stream;
+    changeFacingMode('environment');
 }
 
 
