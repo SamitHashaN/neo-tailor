@@ -25,7 +25,9 @@ const source_2 = {
 
 const constraints = {
     audio: false,
-    video: { deviceId : source_2.id},
+    video: {{ deviceId : source_2.id},facingMode: {
+      exact: 'environment'
+    }},
        options: {
            muted: true,
            mirror: true
