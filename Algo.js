@@ -7,6 +7,7 @@ let imgList = [];
 window.frontBody = {};
 window.sideBody = {};
 let count = 0;
+let pHeight = 0;
 
 const constraints = {
     audio: false,
@@ -59,6 +60,9 @@ screenshotButton.onclick = video2.onclick = function () {
 
 predict.onclick = function () {
     console.log('predict');
+    const ppHeight = document.getElementById('pHeight');
+    console.log(Number(ppHeight.value));
+    pHeight = Number(ppHeight.value);
     if(imgList.length > 1 ){
     loadAndPredict();
     } else{
@@ -406,7 +410,7 @@ function bodyCalculate(buff, w, h, q) {
         const heightPoints = getHeight(buff, w, h);
         console.log(heightPoints);
         const heightDistance = getdis(heightPoints);
-        const actualHeight = 169;
+        const actualHeight = pHeight;
         const scaleFactor = actualHeight / heightDistance;
 
         //shoulder
