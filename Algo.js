@@ -54,7 +54,7 @@ function handleSuccess(stream) {
     }
     navigator.mediaDevices.getUserMedia({
       video: {
-        facingMode: facingMode
+        facingMode: 'environment'
       }});
 }
 
