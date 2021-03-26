@@ -444,7 +444,7 @@ function bodyCalculate(buff, w, h, q) {
         ///Get height/////////
         const heightPoints = getHeight(buff, w, h);
         const heightDistance = getdis(heightPoints);
-        const actualHeight = 169;
+        const actualHeight = pHeight;
         const scaleFactor = actualHeight / heightDistance;
 
         //shoulder
