@@ -108,14 +108,14 @@ async function loadAndPredict() {
     const partSegmentation = await net.segmentPersonParts(imgList[0], {
         flipHorizontal: false,
         internalResolution: 'medium',
-        segmentationThreshold: 0.5,  ///Change to obtain maximum performance
+        segmentationThreshold: 0.75,  ///Change to obtain maximum performance
         maxDetections: 1
     });
 
     const sidepartSegmentation = await net.segmentPersonParts(imgList[1], {
         flipHorizontal: false,
         internalResolution: 'medium',
-        segmentationThreshold: 0.5,  ///Change to obtain maximum performance
+        segmentationThreshold: 0.75,  ///Change to obtain maximum performance
         maxDetections: 1
     });
 
